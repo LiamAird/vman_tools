@@ -13,12 +13,12 @@ class StaffController extends Controller
      */
     public function index()
     {
-        $staff_scout = Staff::where('job', 'Unemployed')->where('speciality', 'scout')->orderBy('employee_potential', 'desc')->get();
-        $staff_trainer = Staff::where('job', 'Unemployed')->where('speciality', 'trainer')->orderBy('employee_potential', 'desc')->get();
+//        $staff_scout = Staff::where('job', 'Unemployed')->where('speciality', 'scout')->orderBy('employee_potential', 'desc')->get();
+//        $staff_trainer = Staff::where('job', 'Unemployed')->where('speciality', 'trainer')->orderBy('employee_potential', 'desc')->get();
 
 		return view('employee.index', [
-			'staff_scout' => $staff_scout,
-			'staff_trainer' => $staff_trainer,
+//			'staff_scout' => $staff_scout,
+//			'staff_trainer' => $staff_trainer,
 		]);
     }
 

@@ -44,19 +44,25 @@ class ScrapeStaffCommand extends Command
 		$client = new Client();
 		$converter = new CssSelectorConverter();
 
-		$config = Config::first();
-		$iterate = 1000;
-
-		$bar = $this->output->createProgressBar($iterate);
-		$bar->start();
+//		$config = Config::first();
+//		$iterate = 1000;
+//
+//
+//		$bar = $this->output->createProgressBar($iterate);
+//		$bar->start();
 
 		$last_id = 0;
 
 		$this->info('');
-		$this->info('start id: ' . $config->staff_id_last_end);
+//		$this->info('start id: ' . $config->staff_id_last_end);
+		$this->info('start id: ' . 11609992);
 		$this->info('');
 
-		for ($i = $config->staff_id_last_end; $i < $config->staff_id_last_end + $iterate; $i++) {
+//		for ($i = $config->staff_id_last_end; $i < $config->staff_id_last_end + $iterate; $i++) {
+		for ($i = 11609992; $i > 2; $i--) {
+			$this->info('');
+			$this->info('ID currently running: ' . $i);
+			$this->info('');
 			$crawler = $client->request('GET', 'https://www.virtualmanager.com/employees/' . $i);
 
 			if ($crawler->evaluate('//title')->text() !== 'The page you were looking for doesn\'t exist (404)') {
@@ -99,33 +105,35 @@ class ScrapeStaffCommand extends Command
 					)->text(),
 				];
 
-				if ($staff['speciality'] === 'Trainer') {
-					if (($staff['youth'] >= 19 && $staff['keeper'] >= 19) || ($staff['youth'] >= 19 && $staff['mark'] >= 19)) {
-						// calculate potential
-						$staff['employee_potential'] = ($staff['youth'] + $staff['keeper'] + $staff['mark']) / 3;
-						Staff::create($staff);
-					}
-				}
+				Staff::create($staff);
 
-				if ($staff['speciality'] === 'Scout') {
-					if ($staff['potential'] >= 19 && ($staff['discipline'] >= 17 || $staff['motivation'] >= 17)) {
-						$staff['employee_potential'] = ($staff['potential'] + $staff['discipline'] + $staff['motivation']) / 3;
-						Staff::create($staff);
-					}
-				}
+//				if ($staff['speciality'] === 'Trainer') {
+//					if (($staff['youth'] >= 19 && $staff['keeper'] >= 19) || ($staff['youth'] >= 19 && $staff['mark'] >= 19)) {
+//						// calculate potential
+//						$staff['employee_potential'] = ($staff['youth'] + $staff['keeper'] + $staff['mark']) / 3;
+//
+//					}
+//				}
+//
+//				if ($staff['speciality'] === 'Scout') {
+//					if ($staff['potential'] >= 19 && ($staff['discipline'] >= 17 || $staff['motivation'] >= 17)) {
+//						$staff['employee_potential'] = ($staff['potential'] + $staff['discipline'] + $staff['motivation']) / 3;
+//						Staff::create($staff);
+//					}
+//				}
 			}
-			$bar->advance();
+//			$bar->advance();
 
 			$last_id = $i;
 		}
 
-		$config->update(
-			[
-				'staff_id_start' => $config->staff_id_last_end,
-				'staff_id_last_end' => $last_id,
-			]
-		);
-
-		$bar->finish();
+//		$config->update(
+//			[
+//				'staff_id_start' => $config->staff_id_last_end,
+//				'staff_id_last_end' => $last_id,
+//			]
+//		);
+//
+//		$bar->finish();
 	}
 }
